@@ -26,16 +26,17 @@ class MoveVS060:
             Usage:
                 p, o = get_current_pose()
         """
-        #try:
-        #    self.listener.waitForTransform(self.base_name, self.ee_name, rospy.Time(), rospy.Duration(10.0))
-        #    trans, rot = self.listener.lookupTransform(self.base_name, self.ee_name, rospy.Time().now())
-        #    return trans, rot
-        #except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException) as e:
-        #    rospy.logerr("{}".format(e))
-        pose = self.group.get_current_pose().pose
-        position = [pose.position.x, pose.position.y, pose.position.z]
-        orientation = [pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w]
-        return position, orientation
+        tf_time = rospy.Time(0)
+        try:
+            #self.listener.waitForTransform(self.base_name, self.ee_name, rospy.Time(0), rospy.Duration(10.0))
+            trans, rot = self.listener.lookupTransform(self.base_name, self.ee_name, tf_time)
+            return trans, rot
+        except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException) as e:
+            rospy.logerr("{}".format(e))
+        #pose = self.group.get_current_pose().pose
+        #position = [pose.position.x, pose.position.y, pose.position.z]
+        #orientation = [pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w]
+        #return position, orientation
 
     def move_to_pose(self, position, orientation):
         """
