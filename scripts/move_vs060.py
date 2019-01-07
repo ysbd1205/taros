@@ -26,17 +26,21 @@ class MoveVS060:
             Usage:
                 p, o = get_current_pose()
         """
-        tf_time = rospy.Time(0)
-        try:
-            #self.listener.waitForTransform(self.base_name, self.ee_name, rospy.Time(0), rospy.Duration(10.0))
-            trans, rot = self.listener.lookupTransform(self.base_name, self.ee_name, tf_time)
-            return trans, rot
-        except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException) as e:
-            rospy.logerr("{}".format(e))
-        #pose = self.group.get_current_pose().pose
-        #position = [pose.position.x, pose.position.y, pose.position.z]
-        #orientation = [pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w]
-        #return position, orientation
+        pose = self.group.get_current_pose().pose
+        position = [pose.position.x, pose.position.y, pose.position.z]
+        orientation = [pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w]
+        return position, orientation
+
+    def get_current_joints(self):
+        """
+        For getting current joints.
+        :Return: List of joint angles
+
+            Usage:
+                j = get_current_joints()
+        """
+        joint_states = self.group.get_current_joint_values()
+        return joint_states
 
     def move_to_pose(self, position, orientation):
         """
