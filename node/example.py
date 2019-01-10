@@ -5,7 +5,7 @@ import sys
 import rospy
 import rospkg
 r = rospkg.RosPack()
-sys.path.append(r.get_path("ryutaro_matsumoto"))
+sys.path.append(r.get_path("taros"))
 from scripts.move_vs060 import MoveVS060
 
 class Example:
